@@ -1,0 +1,21 @@
+{
+    "name": "smafe/envato-api",
+    "type": "library",
+    "description": "PHP library to communicate with the Envato API.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Smafe Web Solutions",
+            "email": "h@smafe.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.0.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/Class/Envato/Envato.php"
+        ]
+    }
+}
