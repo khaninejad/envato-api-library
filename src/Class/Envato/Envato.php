@@ -132,6 +132,17 @@
       curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
       curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json' , 'Authorization: Bearer ' . self::getToken() ) );
 
+      if( $method == 'POST' ) {
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
+      }
+
+      if( $method == 'PUT' ) {
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $datas);
+      }
+
       $result = json_decode( curl_exec( $curl ) );
       curl_close( $curl );
 
