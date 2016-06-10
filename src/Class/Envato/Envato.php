@@ -33,7 +33,9 @@
     **/
 
     public function getAuthUrl() {
+
       return 'https://api.envato.com/authorization?response_type=code&client_id=' . $this->app_id . '&redirect_uri=' . $this->app_redirect;
+
     }
 
 
@@ -42,7 +44,9 @@
     **/
 
     public function request( $route, $path = 'GET', $data = false ) {
+
       return self::curl( $route, $path, $data );
+
     }
 
 
@@ -51,7 +55,9 @@
     **/
 
     public function valid_token() {
+
       return self::curl( 'v1/market/private/user/email.json', 'GET' );
+
     }
 
 
@@ -60,7 +66,9 @@
     **/
 
     public function setAccessToken( $token ) {
+
       $this->user_token = $token;
+
     }
 
 
@@ -69,12 +77,13 @@
     **/
 
     public function getAccessToken( $code, $type = 'AUTH' ) {
+
       $ch = curl_init( 'https://api.envato.com/token' );
 
       curl_setopt( $ch, CURLOPT_POST, true );
       curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
 
-      if( $type == 'AUTH' ) {
+      if( $type == 'AUTH' )
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( array(
           'client_id' => $this->app_id,
           'redirect_uri' => $this->app_redirect,
@@ -82,14 +91,13 @@
           'code' => $code,
           'grant_type' => 'authorization_code'
         ) ) );
-      } elseif( $type == 'REFRESH' ) {
+      elseif( $type == 'REFRESH' )
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( array(
           'client_id' => $this->app_id,
           'client_secret' => $this->app_secret,
           'refresh_token' => $code,
           'grant_type' => 'refresh_token'
         ) ) );
-      }
 
       $token = json_decode( curl_exec( $ch ) );
 
@@ -102,6 +110,7 @@
       self::setAccessToken( $token->access_token );
 
       return $token;
+
     }
 
 
@@ -110,6 +119,7 @@
     **/
 
     private function getToken() {
+
       if( isset( $this->user_token ) )
         return $this->user_token;
 
@@ -117,6 +127,7 @@
         return $this->app_token;
 
       return false;
+
     }
 
 

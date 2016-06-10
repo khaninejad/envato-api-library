@@ -21,11 +21,12 @@
   **/
 
   include 'vendor/autoload.php';
+  include 'config.php';
 
   $envato = new \Smafe\Envato( array(
-    'app_id' => 'envato-api-uppynntm'
-  , 'app_secret' => 'TZtUfK7b0ZDFfaSWMYx69S9M9GPP80In'
-  , 'app_redirect' => 'http://envato-api.dev/test.php'
+    'app_id' => APP_ID
+  , 'app_secret' => APP_SECRET
+  , 'app_redirect' => APP_REDIRECT
   ) );
 
 
@@ -44,7 +45,7 @@
   if( isset( $_GET['exit'] ) ) {
     session_destroy();
     $_SESSION['envato_token'] = NULL;
-    header( 'Location: test.php', 0 );
+    header( 'Location: index.php', 0 );
     exit();
   }
 
@@ -185,7 +186,7 @@ $envato->setAccessToken( $token );</pre>
       ?></pre>
 
       <?php if( isset( $logged ) ): ?>
-      <a href="test.php?exit=true">Logout</a>
+      <a href="index.php?exit=true">Logout</a>
       <?php endif; ?>
 
       <?php if( !isset( $logged ) ): ?>
