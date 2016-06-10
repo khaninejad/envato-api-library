@@ -42,6 +42,23 @@ The app token is the same as your "Personal token" with Envato. You can use this
 
 When a user login for the first time, you are given a "refresh token", this refresh token can be used to generate a new access token when it expires without having the user login again. By defining this, then the system will generate a new access token based on the request key and invoke the function ```saveAccessToken()```
 
+## Working example
+This is a complete working example using the Envato API that should work out of the box :)
+
+```
+$envato = new \Smafe\Envato( array(
+  'app_id' => 'ENVATO APP ID'
+, 'app_secret' => 'ENVATO SECRET KEY'
+, 'app_redirect' => 'APP REDIRECT URI'
+, 'app_token' => 'APP TOKEN'
+) );
+
+$request = $envato->request( 'v3/market/catalog/item?id=13041404' );
+
+print_r( $request );
+```
+
+
 # Documentation
 
 You can read more and find a complete demo at https://envato-api.demo.smafe.com/, this demo is running an exact version of what you will find in this library.
