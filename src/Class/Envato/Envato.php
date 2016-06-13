@@ -10,20 +10,22 @@
 
     public function __construct( $data ) {
 
-      if( isset( $data['app_id'] ) )
-        $this->app_id = $data['app_id'];
+      $this->endpoint = 'https://api.envato.com/';
 
-      if( isset( $data['app_secret'] ) )
-        $this->app_secret = $data['app_secret'];
+      if( isset( $data['api_id'] ) )
+        $this->api_id = $data['api_id'];
 
-      if( isset( $data['app_redirect'] ) )
-        $this->app_redirect = $data['app_redirect'];
+      if( isset( $data['api_secret'] ) )
+        $this->api_secret = $data['api_secret'];
 
-      if( isset( $data['app_token'] ) )
-        $this->app_token = $data['app_token'];
+      if( isset( $data['api_redirect'] ) )
+        $this->api_redirect = $data['api_redirect'];
 
-      if( isset( $data['user_request'] ) )
-        $this->user_request = $data['user_request'];
+      if( isset( $data['api_token'] ) )
+        $this->api_token = $data['api_token'];
+
+      if( isset( $data['api_refresh_token'] ) )
+        $this->api_refresh_token = $data['api_refresh_token'];
 
     }
 
@@ -34,7 +36,7 @@
 
     public function getAuthUrl() {
 
-      return 'https://api.envato.com/authorization?response_type=code&client_id=' . $this->app_id . '&redirect_uri=' . $this->app_redirect;
+      return $this->endpoint . 'authorization?response_type=code&client_id=' . $this->api_id . '&redirect_uri=' . $this->api_redirect;
 
     }
 
@@ -54,7 +56,7 @@
     *** Look for valid token (Is user logged in)
     **/
 
-    public function valid_token() {
+    public function validToken() {
 
       return self::curl( 'v1/market/private/user/email.json', 'GET' );
 
@@ -78,23 +80,23 @@
 
     public function getAccessToken( $code, $type = 'AUTH' ) {
 
-      $ch = curl_init( 'https://api.envato.com/token' );
+      $ch = curl_init( $this->endpoint . 'token' );
 
       curl_setopt( $ch, CURLOPT_POST, true );
       curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
 
       if( $type == 'AUTH' )
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( array(
-          'client_id' => $this->app_id,
-          'redirect_uri' => $this->app_redirect,
-          'client_secret' => $this->app_secret,
+          'client_id' => $this->api_id,
+          'redirect_uri' => $this->api_redirect,
+          'client_secret' => $this->api_secret,
           'code' => $code,
           'grant_type' => 'authorization_code'
         ) ) );
       elseif( $type == 'REFRESH' )
         curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( array(
-          'client_id' => $this->app_id,
-          'client_secret' => $this->app_secret,
+          'client_id' => $this->api_id,
+          'client_secret' => $this->api_secret,
           'refresh_token' => $code,
           'grant_type' => 'refresh_token'
         ) ) );
@@ -115,6 +117,30 @@
 
 
     /**
+    *** Request code to token
+    **/
+
+    function renewToken() {
+
+      if( $this->api_refresh_token ) {
+
+        $token = $this->getAccessToken( $this->api_refresh_token, 'REFRESH' );
+
+        if( !$token->access_token )
+          return false;
+
+        return true;
+
+      } else {
+
+        return false;
+
+      }
+
+    }
+
+
+    /**
     *** Get current live token
     **/
 
@@ -123,8 +149,8 @@
       if( isset( $this->user_token ) )
         return $this->user_token;
 
-      if( isset( $this->app_token ) )
-        return $this->app_token;
+      if( isset( $this->api_token ) )
+        return $this->api_token;
 
       return false;
 
@@ -137,7 +163,7 @@
 
     private function curl( $endpoint, $method = 'GET', $data = false, $retry = false ) {
 
-      $curl = curl_init( 'https://api.envato.com/' . $endpoint );
+      $curl = curl_init( $this->endpoint . $endpoint );
 
       curl_setopt( $curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
       curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
@@ -157,10 +183,21 @@
       $result = json_decode( curl_exec( $curl ) );
       curl_close( $curl );
 
+      // Error & Refresh token? Try again
+      if( isset( $result->error ) && isset( $this->api_refresh_token ) && !$retry ) {
+
+        $refresh = self::renewToken();
+
+        if( $refresh )
+          return self::curl( $endpoint, $method, $data, true );
+
+      }
+
       // Throw Exception if error exist
       if( isset( $result->error ) )
         throw new \ErrorException( $result->error_description );
 
+      // Return JSON decoded result
       return $result;
 
     }

@@ -14,31 +14,31 @@ You can easily initiate the library by including the composer ```autoload.php```
 
 ```
 $envato = new \Smafe\Envato( array(
-  'app_id' => 'ENVATO APP ID'
-, 'app_secret' => 'ENVATO SECRET KEY'
-, 'app_redirect' => 'APP REDIRECT URI'
-, 'app_token' => 'APP TOKEN'
-, 'user_request' => 'PRE-EXISTING USER REFRESH TOKEN'
+  'api_id' => 'ENVATO APP ID'
+, 'api_secret' => 'ENVATO SECRET KEY'
+, 'api_redirect' => 'APP REDIRECT URI'
+, 'api_token' => 'APP TOKEN'
+, 'api_refresh_token' => 'PRE-EXISTING USER REFRESH TOKEN'
 ) );
 ```
 
-**app_id**
+**api_id**
 
 The application ID you got when you created the application with Envato.
 
-**app_secret**
+**api_secret**
 
 The secret key you got when you generated the applicated with Envato.
 
-**app_redirect**
+**api_redirect**
 
 The redirect URI where the app will go when you authorize your Envato account. This has to match the URI registered with the application at Envato.
 
-**app_token**
+**api_token**
 
 The app token is the same as your "Personal token" with Envato. You can use this to access the API directly without logging in. This is useful when your only accessing your own account and dont require the user to authenticate with their own Envato account.
 
-**user_request**
+**api_refresh_token**
 
 When a user login for the first time, you are given a "refresh token", this refresh token can be used to generate a new access token when it expires without having the user login again. By defining this, then the system will generate a new access token based on the request key and invoke the function ```saveAccessToken()```
 
@@ -47,10 +47,10 @@ This is a complete working example using the Envato API that should work out of 
 
 ```
 $envato = new \Smafe\Envato( array(
-  'app_id' => 'ENVATO APP ID'
-, 'app_secret' => 'ENVATO SECRET KEY'
-, 'app_redirect' => 'APP REDIRECT URI'
-, 'app_token' => 'APP TOKEN'
+  'api_id' => 'ENVATO APP ID'
+, 'api_secret' => 'ENVATO SECRET KEY'
+, 'api_redirect' => 'APP REDIRECT URI'
+, 'api_token' => 'APP TOKEN'
 ) );
 
 $request = $envato->request( 'v3/market/catalog/item?id=13041404' );

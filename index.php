@@ -24,9 +24,9 @@
   include 'config.php';
 
   $envato = new \Smafe\Envato( array(
-    'app_id' => APP_ID
-  , 'app_secret' => APP_SECRET
-  , 'app_redirect' => APP_REDIRECT
+    'api_id' => APP_ID
+  , 'api_secret' => APP_SECRET
+  , 'api_redirect' => APP_REDIRECT
   ) );
 
 
@@ -92,31 +92,31 @@
       </div>
 
       <h3>Initiate the library</h3>
-      <p>You can easily initiate the library by including the correct information.</p>
+      <p>It's easy to connect to the Envato API by first <a href="https://build.envato.com/" target="_blank">creating an application or private token with Envato</a>. The information given can be provided like the example below to utilize the powerful Rest API.</p>
 
       <pre>$envato = new \Smafe\Envato( array(
-  'app_id' => 'ENVATO APP ID'
-, 'app_secret' => 'ENVATO SECRET KEY'
-, 'app_redirect' => 'APP REDIRECT URI'
-, 'app_token' => 'APP TOKEN'
-, 'user_request' => 'PRE-EXISTING USER REFRESH TOKEN'
+  'api_id' => 'ENVATO APP ID'
+, 'api_secret' => 'ENVATO SECRET KEY'
+, 'api_redirect' => 'APP REDIRECT URI'
+, 'api_token' => 'APP TOKEN'
+, 'api_refresh_token' => 'PRE-EXISTING USER REFRESH TOKEN'
 ) );</pre>
 
       <br />
 
-      <code>app_id</code>
+      <code>api_id</code>
       <p><small>The application ID you got when you created the application with Envato.</small></p>
 
-      <code>app_secret</code>
+      <code>api_secret</code>
       <p><small>The secret key you got when you generated the applicated with Envato.</small></p>
 
-      <code>app_redirect</code>
+      <code>api_redirect</code>
       <p><small>The redirect URI where the app will go when you authorize your Envato account. This has to match the URI registered with the application at Envato.</small></p>
 
-      <code>app_token</code>
+      <code>api_token</code>
       <p><small>The app token is the same as your "Personal token" with Envato. You can use this to access the API directly without logging in. This is useful when your only accessing your own account and dont require the user to authenticate with their own Envato account.</small></p>
 
-      <code>user_request</code>
+      <code>api_refresh_token</code>
       <p><small>When a user login for the first time, you are given a "refresh token", this refresh token can be used to generate a new access token when it expires without having the user login again. By defining this, then the system will generate a new access token based on the request key and invoke the function <code>saveAccessToken()</code></small></p>
 
 
@@ -134,9 +134,9 @@
       <p>Using <code>setAccessToken()</code> then you can define the access token after the library is initiated.</p>
 
       <pre>$envato = new \Smafe\Envato( array(
-  'app_id' => 'ENVATO APP ID'
-, 'app_secret' => 'ENVATO SECRET KEY'
-, 'app_redirect' => 'APP REDIRECT URI'
+  'api_id' => 'ENVATO APP ID'
+, 'api_secret' => 'ENVATO SECRET KEY'
+, 'api_redirect' => 'APP REDIRECT URI'
 ) );
 
 $envato->setAccessToken( $token );</pre>
@@ -173,7 +173,7 @@ $envato->setAccessToken( $token );</pre>
 
         try {
 
-          $logged = $envato->valid_token();
+          $logged = $envato->validToken();
           print_r( $logged );
 
         } catch( \ErrorException $e ) {
@@ -315,10 +315,10 @@ print_r( $request );
       <p>This is a complete working example using the Envato API that should work out of the box :)</p>
 
       <pre>$envato = new \Smafe\Envato( array(
-  'app_id' => 'ENVATO APP ID'
-, 'app_secret' => 'ENVATO SECRET KEY'
-, 'app_redirect' => 'APP REDIRECT URI'
-, 'app_token' => 'APP TOKEN'
+  'api_id' => 'ENVATO APP ID'
+, 'api_secret' => 'ENVATO SECRET KEY'
+, 'api_redirect' => 'APP REDIRECT URI'
+, 'api_token' => 'APP TOKEN'
 ) );
 
 $request = $envato->request( 'v3/market/catalog/item?id=13041404' );
