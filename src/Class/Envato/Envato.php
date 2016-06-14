@@ -165,6 +165,11 @@
 
       $curl = curl_init( $this->endpoint . $endpoint );
 
+      if( $method == 'GET' AND is_array( $data) )
+        $filter = '?' . http_build_query( $data );
+
+      $data = json_encode( $data );
+      
       curl_setopt( $curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
       curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
       curl_setopt( $curl, CURLOPT_HTTPHEADER, array( 'Content-Type: application/json' , 'Authorization: Bearer ' . self::getToken() ) );
