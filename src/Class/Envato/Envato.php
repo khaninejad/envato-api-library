@@ -200,7 +200,7 @@
 
       // Throw Exception if error exist
       if( isset( $result->error ) )
-        throw new \ErrorException( $result->error_description );
+        throw new \ErrorException( ( $result->error_description ) ? $result->error_description : $result->error );
 
       // Return JSON decoded result
       return $result;
