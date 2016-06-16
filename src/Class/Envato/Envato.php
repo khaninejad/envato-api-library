@@ -24,8 +24,10 @@
       if( isset( $data['api_token'] ) )
         $this->api_token = $data['api_token'];
 
-      if( isset( $data['api_refresh_token'] ) )
+      if( isset( $data['api_refresh_token'] ) ) {
         $this->api_refresh_token = $data['api_refresh_token'];
+
+      }
 
     }
 
@@ -78,7 +80,7 @@
     *** Code to Token
     **/
 
-    public function getAccessToken( $code, $type = 'AUTH' ) {
+    public function getAccessToken( $code, $type = 'AUTH', $exceptions = true ) {
 
       $ch = curl_init( $this->endpoint . 'token' );
 
@@ -103,12 +105,19 @@
 
       $token = json_decode( curl_exec( $ch ) );
 
-      if( isset( $token->error ) )
-        throw new \ErrorException( $token->error_description );
+      // Throw Exception if error exist
+      if( isset( $token->error ) AND $exceptions )
+        throw new \ErrorException( ( isset( $token->error_description ) ) ? $token->error_description : $token->error );
 
+      // Return empty result if error and $exceptions disabled
+      if( isset( $token->error ) AND !$exceptions )
+        return false;
+
+      // Save token if function exists
       if( function_exists( 'saveAccessToken' ) )
         saveAccessToken( $token->access_token );
 
+      // Set current access token in the library
       self::setAccessToken( $token->access_token );
 
       return $token;
@@ -122,7 +131,19 @@
 
     function renewToken() {
 
-      if( $this->api_refresh_token ) {
+      if( is_array( $this->api_refresh_token ) ) {
+
+        $token = $this->getAccessToken( current( $this->api_refresh_token ), 'REFRESH', false );
+        echo current( $this->api_refresh_token );
+        if( !isset( $token->access_token ) AND next( $this->api_refresh_token ) )
+          return self::renewToken();
+
+        if( !isset( $token->access_token ) AND !next( $this->api_refresh_token ) )
+          return false;
+
+        return true;
+
+      } elseif( $this->api_refresh_token ) {
 
         $token = $this->getAccessToken( $this->api_refresh_token, 'REFRESH' );
 
@@ -166,7 +187,9 @@
       if( $method == 'GET' AND is_array( $data) )
         $filter = '?' . http_build_query( $data );
 
-      $curl = curl_init( $this->endpoint . $endpoint . $filter );
+      $sort = ( isset( $filter ) ) ? $filter : '';
+
+      $curl = curl_init( $this->endpoint . $endpoint . $sort );
 
       $data = json_encode( $data );
 
@@ -186,6 +209,10 @@
       }
 
       $result = json_decode( curl_exec( $curl ) );
+
+      if( curl_error( $curl ) )
+        throw new \ErrorException( curl_error( $curl ) );
+
       curl_close( $curl );
 
       // Error & Refresh token? Try again

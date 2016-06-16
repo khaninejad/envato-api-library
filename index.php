@@ -119,6 +119,7 @@
       <code>api_refresh_token</code>
       <p><small>When a user login for the first time, you are given a "refresh token", this refresh token can be used to generate a new access token when it expires without having the user login again. By defining this, then the system will generate a new access token based on the request key and invoke the function <code>saveAccessToken()</code></small></p>
 
+      <p><small><strong>Multiple refresh tokens</strong> can be used by providing an <code>array()</code> with keys instead of a string. This will cause the library to loop trough all the refresh tokens until it reaches a refresh token that provides a valid access token.</small></p>
 
       <h3 class="text-danger">saveAccessToken()</h3>
       <p>When the library generates a new access token it checks if the function <code>saveAccessToken()</code> exists. It is up to your app / code to create this function and do with the access token as you please. An example of such a function could be something like this...</p>
@@ -311,6 +312,24 @@ print_r( $request );
         </div>
       </div>
 
+      <h3>Errors</h3>
+      <p>This library is using PHP exceptions to return any errors along the way. All requests should be wrapped using the <code>try {}</code> method to ensure that everything runs smoothly.</p>
+
+      <pre>try {
+
+  $request = $envato->request( 'v3/market/catalog/item?id=13041404' );
+
+  // IF all is good, print request
+  print_r( $request );
+
+} catch( \ErrorException $e ) {
+
+  // IF error, print message
+  echo $e->getMessage();
+
+}
+</pre>
+
       <h3>Working example</h3>
       <p>This is a complete working example using the Envato API that should work out of the box :)</p>
 
@@ -318,12 +337,20 @@ print_r( $request );
   'api_id' => 'ENVATO APP ID'
 , 'api_secret' => 'ENVATO SECRET KEY'
 , 'api_redirect' => 'APP REDIRECT URI'
-, 'api_token' => 'APP TOKEN'
+, 'api_token' => 'APP PRIVATE TOKEN'
 ) );
 
-$request = $envato->request( 'v3/market/catalog/item?id=13041404' );
+try {
 
-print_r( $request );</pre>
+  $request = $envato->request( 'v3/market/catalog/item?id=13041404' );
+  print_r( $request );
+
+} catch( \ErrorException $e ) {
+
+  echo $e->getMessage();
+
+}
+</pre>
 
       <br />
       <br />
