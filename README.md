@@ -42,7 +42,7 @@ The app token is the same as your "Personal token" with Envato. You can use this
 
 When a user login for the first time, you are given a "refresh token", this refresh token can be used to generate a new access token when it expires without having the user login again. By defining this, then the system will generate a new access token based on the request key and invoke the function ```saveAccessToken()```
 
-**Multiple refresh tokens** can be used by providing an ```array()``` with keys instead of a string. This will cause the library to loop trough all the refresh tokens until it reaches a refresh token that provides a valid access token.
+```Multiple refresh tokens can be used by providing an array() with keys instead of a string. This will cause the library to loop trough all the refresh tokens until it reaches a refresh token that provides a valid access token.```
 
 # Errors
 This library is using PHP exceptions to return any errors along the way. All requests should be wrapped using the ```try {}``` method to ensure that everything runs smoothly.
