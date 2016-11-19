@@ -226,8 +226,14 @@
       }
 
       // Throw Exception if error exist
-      if( isset( $result->error ) )
-        throw new \ErrorException( ( isset( $result->error_description ) ) ? $result->error_description : $result->error );
+      if( isset( $result->error ) AND isset( $result->error_description ) )
+        throw new \ErrorException( $result->error_description );
+
+      elseif( isset( $result->error ) AND isset( $result->description ) )
+        throw new \ErrorException( $result->description );
+
+      elseif( isset( $result->error ) )
+        throw new \ErrorException( $result->error );
 
       // Return JSON decoded result
       return $result;
