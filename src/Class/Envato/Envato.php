@@ -216,7 +216,7 @@
       curl_close( $curl );
 
       // Error & Refresh token? Try again
-      if( isset( $result->error ) && isset( $this->api_refresh_token ) && !$retry ) {
+      if( ( isset( $result->error ) && isset( $this->api_refresh_token ) && !$retry ) OR $result->message === 'Unauthorized' ) {
 
         $refresh = self::renewToken();
 
