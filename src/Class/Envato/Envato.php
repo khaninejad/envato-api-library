@@ -235,6 +235,9 @@
       elseif( isset( $result->error ) )
         throw new \ErrorException( $result->error );
 
+      elseif( isset( $result->message ) AND $result->message === 'Unauthorized' )
+        throw new \ErrorException( $result->message );
+
       // Return JSON decoded result
       return $result;
 
