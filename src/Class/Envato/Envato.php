@@ -191,7 +191,7 @@
 
       $curl = curl_init( $this->endpoint . $endpoint . $sort );
 
-      $data = json_encode( $data );
+      $data_j = json_encode( $data );
 
       curl_setopt( $curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4 );
       curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
@@ -199,13 +199,13 @@
 
       if( $method == 'POST' ) {
         curl_setopt( $curl, CURLOPT_POST, true );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data_j );
       }
 
       if( $method == 'PUT' ) {
         curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $curl, CURLOPT_CUSTOMREQUEST, 'PUT' );
-        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
+        curl_setopt( $curl, CURLOPT_POSTFIELDS, $data_j );
       }
 
       $result = json_decode( curl_exec( $curl ) );
