@@ -134,7 +134,7 @@
       if( is_array( $this->api_refresh_token ) ) {
 
         $token = $this->getAccessToken( current( $this->api_refresh_token ), 'REFRESH', false );
-        echo current( $this->api_refresh_token );
+
         if( !isset( $token->access_token ) AND next( $this->api_refresh_token ) )
           return self::renewToken();
 
