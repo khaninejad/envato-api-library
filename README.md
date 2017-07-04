@@ -32,7 +32,7 @@ The secret key you got when you generated the applicated with Envato.
 
 **api_redirect**
 
-The redirect URI where the app will go when you authorize your Envato account. This has to match the URI registered with the application at Envato.
+The redirect URI where the app will go when you authorize your Envato account. This has to match the URI registered with the application at Envato. The redirect endpoint is where you will handle the details given by Envato.
 
 **api_token**
 
@@ -81,7 +81,7 @@ print_r( $request );
 
 # Documentation
 
-You can read more and find a complete demo at https://envato-api.demo.smafe.com/, this demo is running an exact version of what you will find in this library.
+You can read more and find a complete demo at http://envato-api.demo.smafe.com/, this demo is running an exact version of what you will find in this library.
 
 ## Credits
 
