@@ -72,6 +72,10 @@
     <![endif]-->
 
     <style>
+      body {
+        font-size: 16px;
+      }
+
       h3 {
         margin-top: 50px;
       }
@@ -111,7 +115,7 @@
       <p><small>The secret key you got when you generated the applicated with Envato.</small></p>
 
       <code>api_redirect</code>
-      <p><small>The redirect URI where the app will go when you authorize your Envato account. This has to match the URI registered with the application at Envato.</small></p>
+      <p><small>TThe redirect URI where the app will go when you authorize your Envato account. This has to match the URI registered with the application at Envato. The redirect endpoint is where you will handle the details given by Envato.</small></p>
 
       <code>api_token</code>
       <p><small>The app token is the same as your "Personal token" with Envato. You can use this to access the API directly without logging in. This is useful when your only accessing your own account and dont require the user to authenticate with their own Envato account.</small></p>
