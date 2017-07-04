@@ -74,6 +74,7 @@
     <style>
       body {
         font-size: 16px;
+        line-height: 28px;
       }
 
       h3 {
