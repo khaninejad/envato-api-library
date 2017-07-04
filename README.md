@@ -74,9 +74,16 @@ $envato = new \Smafe\Envato( array(
 , 'api_token' => 'APP TOKEN'
 ) );
 
-$request = $envato->request( 'v3/market/catalog/item?id=13041404' );
+try {
 
-print_r( $request );
+  $request = $envato->request( 'v3/market/catalog/item?id=13041404' );
+  print_r( $request );
+
+} catch( \ErrorException $e ) {
+
+  echo $e->getMessage();
+
+}
 ```
 
 # Documentation
