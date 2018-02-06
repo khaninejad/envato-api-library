@@ -220,7 +220,7 @@ class Envato
         curl_close($curl);
 
         // Error & Refresh token? Try again
-        if ((isset($result->error) && isset($this->api_refresh_token) && !$retry) or $result->message === 'Unauthorized') {
+        if ((isset($result->error) && isset($this->api_refresh_token) && !$retry) or isset($result->message)) {
             $refresh = self::renewToken();
 
             if ($refresh) {
